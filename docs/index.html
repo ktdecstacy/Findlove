@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Findlove</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #064420, #0b5e2e);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+    h2 {
+      font-size: 2.5rem;
+      color: #e0e0e0;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 1px 1px 3px #000000aa;
+    }
+    .marquee-container {
+      width: 100%;
+      background: #033314;
+      overflow: hidden;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      margin-bottom: 25px;
+      border-radius: 8px;
+      padding: 8px 0;
+    }
+    .marquee-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 15s linear infinite;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: #b5f2a4;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      user-select: none;
+      text-shadow: 0 0 5px #0d5100;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .logo-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .logo-container img {
+      height: 70px;
+      filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.7));
+      object-fit: contain;
+    }
+    form {
+      background: #e6f2d6;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0, 80, 0, 0.3);
+      max-width: 420px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      color: #2e4a1e;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    input, select {
+      padding: 12px 14px;
+      font-size: 1rem;
+      border: 2px solid #a7c17f;
+      border-radius: 10px;
+      background: #f7fbef;
+      color: #2e4a1e;
+      font-weight: 600;
+    }
+    select option {
+      color: #2e4a1e;
+    }
+    button {
+      background: #3a621d;
+      color: #e6f2d6;
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 14px 0;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+    .play-section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .card {
+      width: 320px;
+      height: 300px;
+      perspective: 1000px;
+      display: none;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px;
+      text-align: center;
+    }
+    .card-front {
+      background-color: #f2f9e1;
+      color: #3a621d;
+      user-select: none;
+      cursor: pointer;
+    }
+    .card-back {
+      background-color: #d0f0c0;
+      transform: rotateY(180deg);
+      color: #3a621d;
+      white-space: pre-line;
+      user-select: text;
+    }
+    #adminPanel {
+      display: none;
+      margin-top: 20px;
+      max-width: 600px;
+      width: 100%;
+      background: #c0e6b2;
+      padding: 20px;
+      border-radius: 10px;
+      color: #064420;
+    }
+    #userList {
+      margin-top: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    #searchedUserDisplay {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #a3d18d;
+      border-radius: 8px;
+      color: #064420;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="marquee-container">
+    <div class="marquee-text">PURE AND APPLIED SCIENCE</div>
+  </div>
+
+  <h2>💖 Matchmaking Game 💖</h2>
+
+  <form id="registerForm">
+    <input type="text" id="name" placeholder="Your Name" required />
+    <select id="gender" required>
+      <option value="" disabled selected>Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <input type="file" id="photo" accept="image/*" required />
+    <select id="complexion" required>
+      <option value="" disabled selected>Your Complexion</option>
+      <option value="Fair">Fair</option>
+      <option value="Dark">Dark</option>
+      <option value="Chocolate">Chocolate</option>
+      <option value="Light Skinned">Light Skinned</option>
+      <option value="Albino">Albino</option>
+    </select>
+    <select id="height" required>
+      <option value="" disabled selected>Your Height</option>
+      <option value="Too Tall">Too Tall</option>
+      <option value="Tall">Tall</option>
+      <option value="Average">Average</option>
+      <option value="Moderate">Moderate</option>
+      <option value="Short">Short</option>
+    </select>
+    <select id="stature" required>
+      <option value="" disabled selected>Your Stature</option>
+      <option value="Slim">Slim</option>
+      <option value="Moderate">Moderate</option>
+      <option value="Chubby">Chubby</option>
+      <option value="Fat">Fat</option>
+    </select>
+    <h4 style="margin: 5px 0; color: #3a621d;">Your Preferred Partner</h4>
+    <select id="prefComplexion" required>
+      <option value="" disabled selected>Preferred Complexion</option>
+      <option value="Fair">Fair</option>
+      <option value="Dark">Dark</option>
+      <option value="Chocolate">Chocolate</option>
+      <option value="Light Skinned">Light Skinned</option>
+      <option value="Albino">Albino</option>
+    </select>
+    <select id="prefHeight" required>
+      <option value="" disabled selected>Preferred Height</option>
+      <option value="Too Tall">Too Tall</option>
+      <option value="Tall">Tall</option>
+      <option value="Average">Average</option>
+      <option value="Moderate">Moderate</option>
+      <option value="Short">Short</option>
+    </select>
+    <select id="prefStature" required>
+      <option value="" disabled selected>Preferred Stature</option>
+      <option value="Slim">Slim</option>
+      <option value="Moderate">Moderate</option>
+      <option value="Chubby">Chubby</option>
+      <option value="Fat">Fat</option>
+    </select>
+    <button type="submit">Register</button>
+  </form>
+
+  <button onclick="showAdminPanel()">🔐 Admin Access</button>
+
+  <div class="play-section">
+    <input type="text" id="playerName" placeholder="Enter your name to play" />
+    <button onclick="startGame()">Tap the card</button>
+  </div>
+
+  <div class="card" id="card">
+    <div class="card-inner">
+      <div class="card-front">💌 Tap Me 💌</div>
+      <div class="card-back" id="result">Match result here</div>
+    </div>
+  </div>
+
+  <div id="adminPanel">
+    <input type="text" id="adminSearch" placeholder="Search user by name...">
+    <button onclick="searchUserByName()">Search & Show User</button>
+    <button onclick="toggleUserList()" style="margin-left:10px;">See All Users</button>
+
+    <!-- Container to show searched user info (not on card) -->
+    <div id="searchedUserDisplay"></div>
+
+    <div id="userList"></div>
+  </div>
+
+  <script>
+    let users = JSON.parse(localStorage.getItem('matchmakingUsers')) || [];
+    let matches = JSON.parse(localStorage.getItem('matchmakingPairs')) || {};
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const gender = document.getElementById('gender').value;
+      const photo = document.getElementById('photo').files[0];
+      const complexion = document.getElementById('complexion').value;
+      const height = document.getElementById('height').value;
+      const stature = document.getElementById('stature').value;
+      const prefComplexion = document.getElementById('prefComplexion').value;
+      const prefHeight = document.getElementById('prefHeight').value;
+      const prefStature = document.getElementById('prefStature').value;
+
+      if (users.some(u => u.name.toLowerCase() === name.toLowerCase())) {
+        alert("Name already registered.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function() {
+        const newUser = {
+          name, gender, photo: reader.result,
+          complexion, height, stature,
+          preference: `${prefComplexion} ${prefHeight} ${prefStature}`
+        };
+        users.push(newUser);
+        localStorage.setItem('matchmakingUsers', JSON.stringify(users));
+        alert("Registered Successfully!");
+        e.target.reset();
+      };
+      reader.readAsDataURL(photo);
+    });
+
+    function showAdminPanel() {
+      const key = prompt("Enter admin access code:");
+      if (key === "mySecret123") {
+        document.querySelector('.play-section').style.display = 'flex';
+        document.getElementById('card').style.display = 'block';
+        document.getElementById('adminPanel').style.display = 'block';
+        // Do NOT render user list automatically here
+        clearUserList();
+        clearSearchedUser();
+      } else {
+        alert("Wrong access code.");
+      }
+    }
+
+    function toggleUserList() {
+      const userListEl = document.getElementById("userList");
+      if (userListEl.innerHTML.trim() === "") {
+        renderUserList();
+      } else {
+        clearUserList();
+      }
+    }
+
+    function renderUserList() {
+      const list = users.map((u, i) => `
+        <div style="margin-bottom:10px;">
+          <strong>${u.name}</strong> - ${u.gender} - ${u.complexion} - ${u.height} - ${u.stature}<br>
+          <img src="${u.photo}" alt="${u.name}" width="60" style="border-radius: 5px; margin-top: 5px;" /><br>
+          <button onclick="deleteUser(${i})">Delete</button>
+        </div>
+      `).join('');
+      document.getElementById("userList").innerHTML = list;
+    }
+
+    function clearUserList() {
+      document.getElementById("userList").innerHTML = "";
+    }
+
+    function clearSearchedUser() {
+      document.getElementById("searchedUserDisplay").innerHTML = "";
+    }
+
+    function deleteUser(index) {
+      if (confirm("Are you sure you want to delete this user?")) {
+        users.splice(index, 1);
+        localStorage.setItem('matchmakingUsers', JSON.stringify(users));
+        // Refresh user list if shown
+        if (document.getElementById("userList").innerHTML.trim() !== "") {
+          renderUserList();
+        }
+        // Clear searched user if deleted
+        clearSearchedUser();
+      }
+    }
+
+    function startGame() {
+      const playerName = document.getElementById("playerName").value.trim().toLowerCase();
+      const player = users.find(u => u.name.toLowerCase() === playerName);
+      if (!player) return alert("Name not found.");
+      if (matches[player.name]) {
+        const match = users.find(u => u.name === matches[player.name]);
+        return showResult(match, player);
+      }
+      const opposite = player.gender === "male" ? "female" : "male";
+      const options = users.filter(u => u.gender === opposite && !matches[u.name] && !Object.values(matches).includes(u.name));
+      if (options.length === 0) return alert("No matches available.");
+      const ranked = options.map(u => ({ user: u, score: getMatchScore(player.preference, u) })).sort((a, b) => b.score - a.score);
+      const bestMatch = ranked[0].user;
+      matches[player.name] = bestMatch.name;
+      matches[bestMatch.name] = player.name;
+      localStorage.setItem('matchmakingPairs', JSON.stringify(matches));
+      showResult(bestMatch, player);
+    }
+
+    function getMatchScore(pref, user) {
+      let score = 0;
+      const p = pref.toLowerCase();
+      if (p.includes(user.complexion.toLowerCase())) score += 2;
+      if (p.includes(user.height.toLowerCase())) score += 2;
+      if (p.includes(user.stature.toLowerCase())) score += 2;
+      return score;
+    }
+
+    function showResult(match, player) {
+      document.getElementById("result").innerText = `${match.name}\nComplexion: ${match.complexion}\nHeight: ${match.height}\nStature: ${match.stature}\n\nYour Preference: \"${player.preference}\"`;
+      document.getElementById("card").classList.add("flipped");
+    }
+
+    // Modified: Don't show searched user on card, show in separate display above user list
+    function showSearchedUser(user) {
+      const display = document.getElementById("searchedUserDisplay");
+      display.innerHTML = `
+        <strong>Search Result:</strong><br>
+        Name: ${user.name}<br>
+        Gender: ${user.gender}<br>
+        Complexion: ${user.complexion}<br>
+        Height: ${user.height}<br>
+        Stature: ${user.stature}<br>
+        <img src="${user.photo}" alt="${user.name}" width="100" style="border-radius: 8px; margin-top: 5px;" />
+      `;
+    }
+
+    function searchUserByName() {
+      const name = document.getElementById("adminSearch").value.trim().toLowerCase();
+      const user = users.find(u => u.name.toLowerCase() === name);
+      if (!user) {
+        alert("User not found.");
+        clearSearchedUser();
+        return;
+      }
+      showSearchedUser(user);
+      // Do NOT show on card anymore
+      // document.getElementById("card").classList.remove("flipped");
+    }
+  </script>
+</body>
+</html>
